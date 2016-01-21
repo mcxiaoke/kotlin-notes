@@ -290,13 +290,13 @@ fun fun7() {
 }
 
 // lambda表达式的隐式Receiver
-class HTML {
+private class HTML {
     fun body() {
         /****/
     }
 }
 
-fun html(init: HTML.() -> Unit): HTML {
+private fun html(init: HTML.() -> Unit): HTML {
     val html = HTML()  // create the receiver object
     html.init()        // pass the receiver object to the lambda
     return html
