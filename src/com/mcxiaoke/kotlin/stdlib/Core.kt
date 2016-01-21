@@ -1,4 +1,4 @@
-package stdlib
+package com.mcxiaoke.kotlin.stdlib
 
 /**
  * User: mcxiaoke
