@@ -405,3 +405,124 @@ fun names3(names: Collection<String>) {
             .forEach { print(it) }
 }
 ```
+
+# Basic Types
+
+Type    | Bit width
+---|---
+Double  | 64
+Float   | 32
+Long    | 64
+Int     | 32
+Short   | 16
+Byte    | 8
+
+---
+
+# Numbers
+
+```kotlin
+
+val a: Int? = 1 
+val b: Long? = a 
+print(a == b) // false
+
+val b: Byte = 1 // OK,
+val i: Int = b // ERROR
+
+val i: Int = b.toInt() // OK
+``` 
+
+---
+
+# Numbers
+
+```kotlin
+toByte(): Byte
+toShort(): Short
+toInt(): Int
+toLong(): Long
+toFloat(): Float
+toDouble(): Double
+toChar(): Char
+```
+
+---
+
+# Operations
+
+```kotlin
+shl(bits) – signed shift left (Java’s <<)
+shr(bits) – signed shift right (Java’s >>)
+ushr(bits) – unsigned shift right (Java’s >>>)
+and(bits) – bitwise and
+or(bits) – bitwise or
+xor(bits) – bitwise xor
+inv() – bitwise inversion
+```
+
+---
+
+# Characters
+
+```kotlin
+fun decimalDigitValue(c: Char): Int {
+  if (c !in '0'..'9')
+    throw IllegalArgumentException("Out of range")
+  return c.toInt() - '0'.toInt() // Explicit conversions to numbers
+}
+```
+
+# Boolean 
+
+```kotlin
+true and false
+|| – lazy disjunction
+&& – lazy conjunction
+! - negation
+```
+
+---
+
+# Arrays
+
+```kotlin
+class Array<T> private constructor() {
+val size: Int
+fun get(index: Int): T
+fun set(index: Int, value: T): Unit
+fun iterator(): Iterator<T>
+// ...
+}
+```
+
+---
+
+# Arrays
+
+```kotlin
+val asc = Array(5, { i -> (i * i).toString() })
+
+val x: IntArray = intArrayOf(1, 2, 3)
+x[0] = x[1] + x[2]
+```
+
+---
+
+# Strings
+
+```kotlin
+for (c in str) {
+    println(c)
+}
+
+val s = "Hello, world!\n"
+
+val text = """
+  for (c in "foo")
+    print(c)
+"""
+
+val s = "abc"
+val str = "$s.length is ${s.length}"
+```
