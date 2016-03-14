@@ -21,7 +21,7 @@ Kotlin is a pragmatic programming language for JVM and Android that combines OO 
 
 - Lambda 表达式
 - 数据类 (Data classes)
-- 函数字面量和内联函数（Function literals & inline functions）
+- 函数字面量和内联函数（Inline functions）
 - 函数扩展 (Extension functions)
 - 空安全（Null safety）
 - 智能转换（Smart casts）
@@ -526,3 +526,139 @@ val text = """
 val s = "abc"
 val str = "$s.length is ${s.length}"
 ```
+
+---
+
+# If
+
+```kotlin
+// As expression 
+val max = if (a > b) a else b
+
+val max = if (a > b) { 
+    print("Choose a") 
+    a 
+  } 
+  else { 
+    print("Choose b") 
+    b 
+  }
+```
+
+---
+
+# When
+
+```kotlin
+when (x) {
+  1 -> print("x == 1")
+  2 -> print("x == 2")
+  else -> { // Note the block
+    print("x is neither 1 nor 2")
+  }
+}
+```
+
+# When
+
+```kotlin
+when (x) {
+  0, 1 -> print("x == 0 or x == 1")
+  else -> print("otherwise")
+}
+
+when (x) {
+  parseInt(s) -> print("s encodes x")
+  else -> print("s does not encode x")
+}
+```
+
+# When
+
+```kotlin
+when (x) {
+  in 1..10 -> print("x is in the range")
+  in validNumbers -> print("x is valid")
+  !in 10..20 -> print("x is outside the range")
+  else -> print("none of the above")
+}
+```
+
+# When
+
+```kotlin
+val hasPrefix = when(x) {
+  is String -> x.startsWith("prefix")
+  else -> false
+}
+
+when {
+  x.isOdd() -> print("x is odd")
+  x.isEven() -> print("x is even")
+  else -> print("x is funny")
+}
+```
+
+# Returns
+
+```kotlin
+- return. 
+- break. 
+- continue. 
+```
+
+---
+
+# Returns
+
+```kotlin
+loop@ for (i in 1..100) {
+  for (j in 1..100) {
+    if (...)
+      break@loop
+  }
+}
+```
+
+# Returns
+
+```kotlin
+fun foo() {
+  ints.forEach {
+    if (it == 0) return
+    print(it)
+  }
+}
+
+fun foo() {
+  ints.forEach lit@ {
+    if (it == 0) return@lit
+    print(it)
+  }
+}
+```
+
+---
+
+# Returns
+
+```kotlin
+fun foo() {
+  ints.forEach {
+    if (it == 0) return@forEach
+    print(it)
+  }
+}
+```
+
+# Returns
+
+```kotlin
+fun foo() {
+  ints.forEach(fun(value: Int) {
+    if (value == 0) return
+    print(value)
+  })
+}
+```
+
