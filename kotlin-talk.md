@@ -33,6 +33,10 @@ Kotlin is a pragmatic programming language for JVM and Android that combines OO 
 - 声明点变量（Declaration-site variance）
 - 区间表达式（Range expressions）
 
+???
+
+note test!
+
 ---
 
 # 发展
