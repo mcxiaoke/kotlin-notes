@@ -3,9 +3,13 @@ class: center, middle
 
 # Kotlin
 
-### 
+## 
 
-Concise, Expressive, Safe, Versatile, Interoperable
+Kotlin is a pragmatic programming language for JVM and Android that combines OO and functional features and is focused on interoperability, safety, clarity and tooling support. 
+
+.footnote[
+[awesome-kotlin](https://github.com/mcxiaoke/awesome-kotlin)
+]
 
 ---
 
@@ -29,7 +33,7 @@ class: left, middle
 
 class: center, middle
 
-# Basic Syntax
+# Syntax
 
 ---
 
@@ -224,8 +228,14 @@ fun iterator(): Iterator<T>
 
 val asc = Array(5, { i -> (i * i).toString() })
 
-val x: IntArray = intArrayOf(1, 2, 3)
+val x: IntArray = arrayOf(1, 2, 3, 4, 5)
 x[0] = x[1] + x[2]
+
+val intArray2 = intArrayOf(2, 4, 6, 8, 10)
+val boolArray1 = arrayOf(true, false, true, false, true)
+val boolArray2 = booleanArrayOf(true, true, false, true, false, true)
+val strArray1 = arrayOf("Cat", "Dog", "Rabbit")
+// byteArrayOf(), charArrayOf(), shortArrayOf(), longArrayOf(), floatArrayOf()
 ```
 
 ---
@@ -607,27 +617,44 @@ fun main() {
 
 ---
 
-## Delegated Properties
-
-- Lazy Properties
-- Observable Properties
-- Storing Properties
+## By Lazy
 
 ```kotlin
-class Delegate {
-  operator fun getValue(thisRef: Any?, 
-  	property: KProperty<*>): String {
-    return "$thisRef, delegating '${property.name}' to me!"
-  }
- 
-  operator fun setValue(thisRef: Any?, property: KProperty<*>, 
-  	value: String) {
-    println("$value assigned to '${property.name} in $thisRef.'")
-  }
+val lazyValue: String by lazy {
+    Log.v("Lazy", "Lazy Init")
+    "Hello, Lazy!"
 }
 
-class Example {
-  var p: String by Delegate()
+fun lazyTest() {
+    Log.d("Lazy", lazyValue)
+    Log.d("Lazy", lazyValue)
+}
+```
+
+```
+V/Lazy: Lazy Init
+D/Lazy: Hello, Lazy!
+D/Lazy: Hello, Lazy!
+```
+
+---
+
+## Observable
+
+```kotlin
+import kotlin.properties.Delegates
+
+class User {
+    var name: String by Delegates.observable("<no name>") {
+        prop, old, new ->
+        println("$old -> $new")
+    }
+}
+
+fun main(args: Array<String>) {
+    val user = User()
+    user.name = "first"
+    user.name = "second"
 }
 ```
 
@@ -649,66 +676,11 @@ val user = User(mapOf(
 println(user.name) // Prints "John Doe"
 println(user.age)  // Prints 25
 
-lass MutableUser(val map: MutableMap<String, Any?>) {
+class MutableUser(val map: MutableMap<String, Any?>) {
     var name: String by map
     var age: Int     by map
 }
 ```
-
-
----
-
-## Lazy Init
-
-```kotlin
-public class MyTest {
-    lateinit var subject: TestSubject
-
-    @SetUp fun setup() {
-        subject = TestSubject()
-    }
-
-    @Test fun test() {
-        subject.method()  // dereference directly
-    }
-}
-
-val lazyValue: String by lazy {
-    println("computed!")
-    "Hello"
-}
-
-fun main(args: Array<String>) {
-    println(lazyValue)
-    println(lazyValue)
-}
-```
-
----
-
-## Extensions
-
-```kotlin
-fun MutableList<Int>.swap(index1: Int, index2: Int) {
-  val tmp = this[index1] // 'this' corresponds to the list
-  this[index1] = this[index2]
-  this[index2] = tmp
-}
-
-val l = mutableListOf(1, 2, 3)
-l.swap(0, 2) // 'this' inside 'swap()' will hold the value of 'l'
-
-fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
-  val tmp = this[index1] // 'this' corresponds to the list
-  this[index1] = this[index2]
-  this[index2] = tmp
-}
-
-val <T> List<T>.lastIndex: Int
-  get() = size - 1
-```
-
----
 
 class: center, middle
 
@@ -796,32 +768,28 @@ Sample().foo()
 
 ---
 
-## Higher-Order Functions
-
-- Inline Functions
-- Lambda Expressions
-- Anonymous Functions
+## Higher-order Functions
 
 ```kotlin
-fun <T> lock(lock: Lock, body: () -> T): T {
-  lock.lock()
-  try {
-    return body()
-  }
-  finally {
-    lock.unlock()
-  }
+func apply(one: Int, two: Int, func: (Int, Int) -> Int): Int {
+  return func(one, two)
 }
 
-fun toBeSynchronized() = sharedResource.operation()
+val sum = apply(1, 2, { x, y -> x + y })
+val difference = apply(1, 2, { x, y -> x - y })
 
-val result = lock(lock, ::toBeSynchronized)
-
-val result = lock(lock, { sharedResource.operation() })
-
-lock (lock) {
-  sharedResource.operation()
+fun <T> List<T>.filter(predicate: (T) -> Boolean): List<T> {
+  val newList = ArrayList<T>()
+  for (item in this) {
+    if (predicate(item)) {
+      newList.add(item)
+    }
+  }
+  return newList
 }
+
+val names = listOf("Jake", "Jesse", "Matt", "Alec")
+val jakes = names.filter { it == "Jake" }
 ```
 
 ---
@@ -880,9 +848,35 @@ val sum = fun Int.(other: Int): Int = this + other
 
 ---
 
+## Extensions
+
+```kotlin
+fun MutableList<Int>.swap(index1: Int, index2: Int) {
+  val tmp = this[index1] // 'this' corresponds to the list
+  this[index1] = this[index2]
+  this[index2] = tmp
+}
+
+val l = mutableListOf(1, 2, 3)
+l.swap(0, 2) // 'this' inside 'swap()' will hold the value of 'l'
+
+val <T> List<T>.lastIndex: Int
+  get() = size - 1
+  
+fun Date.isTuesday(): Boolean {
+  return getDay() == 2
+}
+
+val tuesday = date.isTuesday();
+
+fun Date.isTuesday() = day == 2
+```
+
+---
+
 class: center, middle
 
-# Standard Library
+# Stdlib
 
 ---
 
@@ -920,36 +914,33 @@ fun <T, R> with(receiver: T, block: T.() -> R): R
 
 ---
 
----
+## Generics
 
----
-
----
-
----
-
----
-
-
-## Ranges
+- Java’s wildcards are converted into type projections
+	- Foo<? extends Bar> becomes Foo<out Bar!>!
+	- Foo<? super Bar> becomes Foo<in Bar!>!
+- Java’s raw types are converted into star projections
+	- List becomes List<*>!, i.e. List<out Any?>!
 
 ```kotlin
-if (i in 1..10) { // equivalent of 1 <= i && i <= 10
-  println(i)
+abstract class Comparable1<in T> {
+    abstract fun compareTo(other: T): Int
 }
 
-for (i in 1..4) print(i) // prints "1234"
-for (i in 4..1) print(i) // prints nothing
+fun demo2(x: Comparable1<Number>) {
+    x.compareTo(1.0)
+    val y: Comparable1<Double> = x // OK!
+}
 
-for (i in 4 downTo 1) print(i) // prints "4321"
+// Array<out Any> -> Java: Array<? extends Object>
+fun copy2(from: Array<out Any>, to: Array<Any>) {
+    // ...
+}
 
-for (i in 1..4 step 2) print(i) // prints "13"
-
-for (i in 4 downTo 1 step 2) print(i) // prints "42"
-
-(1..12 step 2).last == 11  // progression with values [1, 3, 5, 7, 9, 11]
-(1..12 step 3).last == 10  // progression with values [1, 4, 7, 10]
-(1..12 step 4).last == 9   // progression with values [1, 5, 9]
+// Array<in String> -> Java: Array<? super String>
+fun fill(dest: Array<in String>, value: String) {
+    // ...
+}
 ```
 
 ---
@@ -988,40 +979,32 @@ val snapshot: Map<String, Int> = HashMap(readWriteMap)
 
 ---
 
-class: center, middle
+## Ranges
 
-# Others
+```kotlin
+if (i in 1..10) { // equivalent of 1 <= i && i <= 10
+  println(i)
+}
+
+for (i in 1..4) print(i) // prints "1234"
+for (i in 4..1) print(i) // prints nothing
+
+for (i in 4 downTo 1) print(i) // prints "4321"
+
+for (i in 1..4 step 2) print(i) // prints "13"
+
+for (i in 4 downTo 1 step 2) print(i) // prints "42"
+
+(1..12 step 2).last == 11  // progression with values [1, 3, 5, 7, 9, 11]
+(1..12 step 3).last == 10  // progression with values [1, 4, 7, 10]
+(1..12 step 4).last == 9   // progression with values [1, 5, 9]
+```
 
 ---
 
-## Generics
+class: center, middle
 
-- Java’s wildcards are converted into type projections
-	- Foo<? extends Bar> becomes Foo<out Bar!>!
-	- Foo<? super Bar> becomes Foo<in Bar!>!
-- Java’s raw types are converted into star projections
-	- List becomes List<*>!, i.e. List<out Any?>!
-
-```kotlin
-abstract class Comparable1<in T> {
-    abstract fun compareTo(other: T): Int
-}
-
-fun demo2(x: Comparable1<Number>) {
-    x.compareTo(1.0)
-    val y: Comparable1<Double> = x // OK!
-}
-
-// Array<out Any> -> Java: Array<? extends Object>
-fun copy2(from: Array<out Any>, to: Array<Any>) {
-    // ...
-}
-
-// Array<in String> -> Java: Array<? super String>
-fun fill(dest: Array<in String>, value: String) {
-    // ...
-}
-```
+# Others
 
 ---
 
@@ -1181,6 +1164,7 @@ val strings = listOf("a", "ab", "abc")
 println(strings.filter(oddLength)) // Prints "[a, abc]"
 ```
 
+
 ---
 
 class: center, middle
@@ -1209,18 +1193,6 @@ if (calendar.firstDayOfWeek == Calendar.SUNDAY) {  // call getFirstDayOfWeek()
     calendar.firstDayOfWeek = Calendar.MONDAY       // call setFirstDayOfWeek()
 }
 ```
-
----
-
-## Calling Kotlin from Java
-
-- Properties
-- Package-Level Functions
-- Instance Fields
-- Static Fields
-- Static Methods
-- Handling signature clashes with @JvmName
-- Overloads Generation
 
 ---
 
@@ -1297,8 +1269,424 @@ void f(String a) { }
 ```
 
 ---
+class: center, middle
+
+# Libraries
 
 ---
----
+
+## Anko DSL
+
+```kotlin
+val act = this
+val layout = LinearLayout(act)
+layout.orientation = LinearLayout.VERTICAL
+val name = EditText(act)
+val button = Button(act)
+button.text = "Say Hello"
+button.setOnClickListener {
+    Toast.makeText(act, "Hello, ${name.text}!", 
+    	Toast.LENGTH_SHORT).show()
+}
+layout.addView(name)
+layout.addView(button)
+```
+
+```kotlin
+verticalLayout {
+    val name = editText()
+    button("Say Hello") {
+        onClick { toast("Hello, ${name.text}!") }
+    }
+}
+```
 
 ---
+
+## Anko Extensions
+
+```kotlin
+toast("Hi there!")
+toast(R.string.message)
+longToast("Wow, such a duration")
+
+alert("Hi, I'm Roy", "Have you tried turning it off and on again?") {
+    positiveButton("Yes") {toast("Oh…")}
+    negativeButton("No") {}
+}.show()
+
+val countries = listOf("Russia", "USA", "Japan", "Australia")
+selector("Where are you from?", countries) { i ->
+    toast("So you're living in ${countries[i]}, right?")
+}
+
+info("String " + "concatenation")
+info { "String " + "concatenation" }
+```
+
+---
+
+## KotterKnife
+
+```kotlin
+public class PersonView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
+  val firstName: TextView by bindView(R.id.first_name)
+  val lastName: TextView by bindView(R.id.last_name)
+
+  // Optional binding.
+  val details: TextView? by bindOptionalView(R.id.details)
+
+  // List binding.
+  val nameViews: List<TextView> by bindViews(R.id.first_name, R.id.last_name)
+
+  // List binding with optional items being omitted.
+  val nameViews: List<TextView> by bindOptionalViews(R.id.first_name, R.id.middle_name, R.id.last_name)
+}
+```
+
+---
+
+## Koi Extensions
+
+```kotlin
+// available for Activity and Fragment
+val act = getActivity() // Activity
+act.restart() // restart Activity
+val app = act.getApp() // Application
+val app2 = act.application  // Application
+// Activity.find()
+// Fragment.find()
+// View.find()
+val textView = act.find<TextView>(android.R.id.text1)
+
+// available for Context
+// available in Activity/Fragment/Service/Context
+toast(R.string.app_name)
+toast("this is a toast")
+longToast(R.string.app_name)
+longToast("this is a long toast")
+```
+
+---
+
+## Context Extensions
+
+```kotlin
+val isYoutubeInstalled = isAppInstalled("com.douban.app")
+val isMainProcess = isMainProcess()
+val disabled = isComponentDisabled(MainActivity::class.java)
+enableComponent(MainActivity::class.java)
+
+val sig = getPackageSignature()
+val sigString = getSignature()
+
+// available for Context
+// easy way to get system service, no cast
+val wm = getWindowService()
+val tm = getTelephonyManager()
+val nm = getNotificationManager()
+val acm = getActivityManager()
+val inflater = getLayoutService()
+val lm = getLocationManager()
+val wifi = getWifiManager()
+```
+
+---
+
+## Async Functions
+
+```kotlin
+private val intVal = 1000
+private var strVal: String? = null
+
+asyncSafe {
+    print("action executed only if context alive ")
+    // if you want get caller context
+    // maybe null
+    val ctx = getCtx()
+    // if context is Activity or Fragment
+    // may cause memory leak
+    print("outside value, $intVal $strVal")
+
+    mainThreadSafe {
+        // also with context alive check
+        // if context dead, not executed
+        print("code here executed in main thread")
+    }
+
+    mainThread {
+        // no context check
+        print("code here executed in main thread")
+    }
+}
+```
+
+---
+
+class: center, middle
+
+# Real Examples
+
+---
+
+## ChatDebug.kt
+
+```kotlin
+// ChatDebug.kt
+@JvmField val developers = listOf("1376127", "1062052", "1176229")
+
+@JvmStatic private var toast: Toast? = null
+
+@JvmStatic private fun showToast(ctx: Context, message: String) {
+    toast?.cancel()
+    toast = Toast.makeText(ctx, message, Toast.LENGTH_LONG)
+    toast?.setGravity(Gravity.CENTER, 0, 0)
+    toast?.show()
+}
+
+@JvmStatic fun showDevToast(ctx: Context, message: String) {
+    if (DEBUG && ChatManager.appUserId in developers) {
+        showToast(ctx, message)
+    }
+}
+
+@JvmStatic fun handleDevCmd(act: Activity, text: String): Boolean {
+    if (text.startsWith("//")) {
+        val cmd = text.substring(2)
+        when (cmd) {
+            "d", "dump" -> return showDevDialog(act, false)
+            "d2", "dump2" -> return showDevDialog(act, true)
+            "dc", "dbclear" -> return clearDatabase(act)
+            else -> {
+            }
+        }
+    }
+    return false
+}
+```
+
+---
+
+## ChatHelper.kt
+
+```kotlin
+// com.douban.chat.ChatHelper.kt
+@JvmStatic fun filterMessages(data: SyncData, type: String, cid: String): List<Message> {
+    return data.messages.filter {
+        cid == it.conversationId && type == it.conversationType
+    }
+}
+
+@JvmStatic fun findDuplicate(messages: List<Message>): String {
+    val set = messages.toHashSet()
+    val copy = messages.toMutableList()
+    set.forEach { copy.remove(it) }
+    return copy.joinToString { "${it.id}(${it.syncId})" }
+}
+    
+@JvmStatic @Synchronized fun addIfNotContains(
+        messages: MutableList<Message>,
+        newMessage: Message): Boolean {
+    synchronized(lock) {
+        if (newMessage.id > messages.lastOrNull()?.id ?: 0) {
+            messages.add(newMessage)
+            return true
+        }
+    }
+    return false
+}
+```
+
+---
+
+## ChatPrefs.kt
+
+```kotlin
+// com.douban.chat.ChatPrefs.kt
+class ChatPrefs(private val mContext: Context) {
+    private val mPreferences: SharedPreferences
+
+    init {
+        mPreferences = mContext.getSharedPreferences(
+        	SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+    }
+
+    fun saveSyncInfo(info: SyncInfo?) {
+        info?.let {
+            mPreferences.edit()
+            	.putInt("sync_id_${info.type}", info.id)
+                .putString("sync_info_${info.type}", 
+               	info.toJson()).apply()
+        }
+    }
+
+    companion object {
+        const private val SHARED_PREFERENCES_NAME 
+        	= "chat_sdk_preferences"
+        const private val KEY_CLIENT_ID = "client_id_"
+    }
+
+}
+```
+
+---
+
+## DataProvider.kt
+
+```kotlin
+// com.douban.chat.DataProvider.kt
+fun syncInfo(): SyncInfo? = recent?.info
+
+fun syncId(): Int = recent?.info?.id ?: 0
+
+fun latestMessage(): Message? = recent?.messages?.lastOrNull()
+    
+fun putSync(data: SyncData) {
+        val curIds = messagesMap.values.flatten().takeLast(5)
+                .map { "${it.id}(${it.syncId})" }.joinToString()
+        val newIds = data.messages.takeLast(5)
+                .map { "${it.id}(${it.syncId})" }.joinToString()
+        LogUtil.d(TAG, "putSync() curIds=$curIds newIds=$newIds")
+    }
+    synchronized (lock) {
+        recent = data
+        putSyncMessages(data.messages)
+    }
+    if (ChatDebug.DEBUG) {
+        LogUtil.v(TAG, "putSync() total:${messagesMap.size}")
+    }
+}
+```
+
+---
+
+## ChatManager.kt
+
+```kotlin
+// com.douban.chat.ChatManager.kt
+object ChatManager {
+    const val TAG = "ChatManager"
+
+    lateinit var api: ChatApi
+    lateinit private var app: Application
+    lateinit private var config: ChatConfig
+    // ......
+    @Synchronized fun init(ctx: Context,
+                           config: ChatConfig) {
+        app = ctx.applicationContext as Application
+        api = ChatApiImpl(config.apiKey, config.deviceId,
+                config.apiHost, config.userAgent)            
+    // ......
+    handler = object : Handler() {
+        override fun handleMessage(msg: android.os.Message) {
+            when (msg.what) {
+                MSG_SYNC -> handleSync()
+                MSG_PING -> handlePing()
+                MSG_CHECK -> handleCheck()
+            }
+        }
+    }
+    // ......
+}
+```
+
+---
+
+## ChatStore.kt
+
+```kotlin
+// com.douban.chat.db.ChatStore.kt
+// using com.douban.chat.ext.SQLiteDatabaseExt.kt
+init {
+    mHelper = SQLiteHelper(mContext)
+}
+    
+fun putSyncData(data: SyncData): Int {
+    val info = data.info
+    mHelper.transaction { db ->
+        data.messages.forEach {
+            db.insert(SQLiteHelper.SYNC_DATA_TABLE, 
+            	null, SQLiteHelper.getMessageValues(it))
+        }
+        db.insert(SQLiteHelper.SYNC_INFO_TABLE, null,
+                SQLiteHelper.getSyncInfoValues(info))
+
+        val now = System.currentTimeMillis()
+        val idCv = ContentValues()
+        with(idCv) {
+        // ......
+            db.insert(SQLiteHelper.KEY_VALUE_TABLE, null, idCv)
+        }
+    }
+    pruneConversationMessages(data.messages.firstOrNull())
+    return data.messages.size
+}
+```
+
+---
+
+## MqttProvider.kt
+
+```kotlin
+// com.douban.chat.mqtt. MqttProvider.kt
+class MqttProvider(val context: Context, val config: MqttConfig,
+                   private val idGetter: (String) -> String?) 
+                   : MqttCallback {
+    var onNewMessage: ((topic: String, payload: String) -> Unit)? = null
+    var clientId: String?
+        get() = config.clientId
+        set(value) {
+            config.clientId = value
+        }
+    val deviceId: String
+        get() = config.deviceId                  
+     
+    fun doUnSubscribeTopics(topics: Array<String>,
+	    	completion: ((Boolean, Throwable?) -> Unit)?) {
+        when (topics.size) {
+            0 -> completion?.invoke(false,
+                    NullPointerException("topics must not be null"))
+            else -> {
+                savedTopics.removeAll(topics.toList())
+                execute {
+                // ......
+                    completion?.invoke(error == null, error)
+                }
+            }
+        }
+    }              
+}
+```
+
+---
+
+## MqttService.kt
+
+```kotlin
+// com.douban.chat.service.MqttService.kt
+override val isConnected: Boolean
+    get() = provider?.isConnected ?: false
+    
+private fun forcePing(from: String) {
+    acquireWakeLock(ChatConst.ONE_SECOND * 5L)
+    provider?.doPingMQTT() { r, e ->
+        releaseWakeLock()
+        if (r) {
+            connection.onPing()
+        }
+    }
+}
+    
+private fun doUnSubscribeTopics(topics: Array<String>?) {
+    topics?.let {
+        provider?.doUnSubscribeTopics(it, null)
+    }
+}     
+```
+
+---
+
+class: center, middle
+
+# END
+
