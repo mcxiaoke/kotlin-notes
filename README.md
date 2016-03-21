@@ -2,6 +2,7 @@
 
 * [我的学习笔记: Kotlin教程（入门篇）](kotlin-tutorial-basic.md)
 * [Kotlin: Java 6 废土中的一线希望](https://realm.io/cn/news/droidcon-michael-pardo-kotlin/)
+* [Kotlin: 高级Android开发](https://realm.io/cn/news/oredev-jake-wharton-kotlin-advancing-android-dev/)
 * [为什么说Kotlin值得一试](http://mp.weixin.qq.com/s?__biz=MzA3NTYzODYzMg==&mid=404087761&idx=1&sn=d80625ee52f860a7a2ed4c238d2151b6)
 * [Kotlin中文站](http://tanfujun.com/kotlin-web-site-cn/)
 * [Kotlin官方文档翻译系列（简书）](http://www.jianshu.com/notebooks/2822252/latest)
