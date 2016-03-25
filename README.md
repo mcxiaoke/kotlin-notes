@@ -1,5 +1,7 @@
 # Kotlin中文教程
 
+* [Kotlin入门和使用讲稿(PPT)](slides.md)
+* [Kotlin入门和使用讲稿(文本)](notes.md)
 * [我的学习笔记: Kotlin教程（入门篇）](kotlin-tutorial-basic.md)
 * [Kotlin: Java 6 废土中的一线希望](https://realm.io/cn/news/droidcon-michael-pardo-kotlin/)
 * [Kotlin: 高级Android开发](https://realm.io/cn/news/oredev-jake-wharton-kotlin-advancing-android-dev/)
