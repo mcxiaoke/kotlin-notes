@@ -1,15 +1,10 @@
-class: center, middle
+# Kotlin入门和使用（讲稿）
 
-# Kotlin
+zhangxiaoke@douban.com 2016.03.24
 
-### 
+------
 
-Concise, Expressive, Safe, Versatile, Interoperable
-
-
-???
-
-Kotlin是芬兰湾，圣彼得堡附近一个岛的名字，JetBrains是一个捷克的公司，在圣彼得堡有分公司。Kotlin正式版已经发布了，在生产环境中使用没有发现问题。
+## Intro
 
 ### Java 有哪些问题？
 
@@ -27,9 +22,7 @@ Kotlin是芬兰湾，圣彼得堡附近一个岛的名字，JetBrains是一个�
 
 - 语法繁琐，不够简洁：Java 肯定不是最简洁的语言。这件事本身不是件坏事，但是事实上存在太多的常见的冗余。这会带来潜在的错误和缺陷。在这之前，我们还要处理安卓 API 带来的问题。
 
----
-
-class: left, middle
+------
 
 ## Features
 
@@ -44,9 +37,6 @@ class: left, middle
 - Class delegation
 - Type inference
 - Range expressions
-
-???
-
 
 ### Kotlin 有几个核心的目标：
 
@@ -76,13 +66,11 @@ class: left, middle
 
 我们将在这篇文章里提及以上大多数特性。Kotlin 之所以能跟随者 JVM 的生态系统不断地进步，是因为他没有任何限制。它编译出来的正是 JVM 字节码。在 JVM 看来，它就跟其他语言一样样的。事实上，如果你在 IntelliJ 或者 Android Studio 上用 Kotlin 的插件，它自带里一个字节码查看器，可以显示每个方法生成的 JVM 字节码。
 
----
-
-class: center, middle
+------
 
 # Syntax
 
----
+------
 
 ## Variables
 
@@ -111,10 +99,6 @@ var b: String? = "abc"
 b = null // ok
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/basic-syntax.html)]
-
-???
-
 ### 类型声明
 
 - 包的声明应处于源文件顶部，目录与包的结构无需匹配，源代码可以在文件系统的任意位置。
@@ -132,7 +116,7 @@ b = null // ok
 
 只要 Kotlin 可以推导，这个规则同样适用与其他一些类型。通常，如果是局部变量，当你在声明一个值或者变量的时候你不需要指明类型。在一些无法推导的场景里，你才需要用完整的声明变量语法指明变量类型。
 
----
+------
 
 ## Define Function
 
@@ -156,11 +140,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/functions.html)]
-
-???
-
-### 代码说明
+### 定义函数
 
 - 声明函数的关键字是 fun，fun 后面跟的是函数的名称，然后括号包裹起来的是函数参数，这个跟 Java 类似。
 
@@ -168,7 +148,7 @@ fun main(args: Array<String>) {
 
 - 函数的返回类型在最后，这个跟 Java 放在前面形式不太一样。如果一个函数没有返回任何类型，可以返回一个 Unit 类型，当然也可以省略。调用 Kotlin 标准库中的函数 println 就能打印 Hello World 出来，实际上它最终调用了 Java 的 system.out.println。
 
----
+------
 
 ## If Expressions
 
@@ -195,15 +175,13 @@ val max = if (a > b) {
   }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/control-flow.html)]
-
-???
+### If表达式
 
  - 在 Kotlin 中，if是一个表达式，即它会返回一个值。 因此就不需要三元运算符（条件 ? 然后 : 否则），因为普通的 if 就能胜任这个角色。
 
  - if的分支可以是代码块，最后的表达式作为该块的值。如果你使用 if 作为表达式而不是语句（例如：返回它的值或者 把它赋给变量），该表达式需要有 else 分支。
 
----
+------
 
 ## Loop
 
@@ -227,9 +205,7 @@ fun whileLoop1(args: Array<String>) {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/control-flow.html)]
-
-???
+### FOR循环
 
 - for 循环可以对任何提供迭代器（iterator）的对象进行遍历，循环体可以是一个代码块。
 
@@ -242,38 +218,27 @@ fun whileLoop1(args: Array<String>) {
 
 - while 和 do..while 照常使用。 
 
----
+------
 
 ## When
 
 ```kotlin
 when (x) {
   0, 1 -> print("x == 0 or x == 1")
+  3 -> print("x == 3")
   4 -> print("x == 4")
-  in 100..200 -> print("x is in (100,200)")
-  !in 10..20 -> print("x is outside the range")
   else -> print("otherwise")
 }
 
-when {
-  x.isOdd() -> print("x is odd")
-  x.isEven() -> print("x is even")
-  else -> print("x is funny")
-}
-
-fun transform(color: String): Int {
-    return when (color) {
-        "Red" -> 0
-        "Green" -> 1
-        "Blue" -> 2
-        else -> throw RuntimeException("invalid color")
-    }
+when (x) {
+  in 1..10 -> print("x is in the range")
+  in validNumbers -> print("x is valid")
+  !in 10..20 -> print("x is outside the range")
+  else -> print("none of the above")
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/control-flow.html)]
-
-???
+### When语句和表达式
 
 - when 取代了类 C 语言的 switch 操作符
 - when 将它的参数和所有的分支条件顺序比较，直到某个分支满足条件
@@ -287,7 +252,7 @@ fun transform(color: String): Int {
 - when 也可以用来取代 if-else if链
 - 如果不提供参数，所有的分支条件都是简单的布尔表达式，而当一个分支的条件为真时则执行该分支
 
----
+------
 
 ## Returns
 
@@ -311,9 +276,7 @@ fun foo() {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/returns.html)]
-
-???
+### 返回和跳转
 
 - Kotlin 有三种结构化跳转操作符
 	- return.默认从最直接包围它的函数或者匿名函数返回。
@@ -328,7 +291,7 @@ fun foo() {
 
 - 这个 return 表达式从最直接包围它的函数即 foo 中返回。 （注意，这种非局部的返回只支持传给内联函数的 lambda 表达式。） 如果我们需要从 lambda 表达式中返回，我们必须给它加标签并用以限制 return。
 
----
+------
 
 ## Strings
 
@@ -351,9 +314,7 @@ var args = arrayOf("Cat", "Dog", "Rabbit")
 print("Hello ${args[0]}")
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/basic-types.html)]
-
-???
+### 字符串说明
 
  - 字符串用 String 类型表示。字符串是不可变的。 字符串的元素——字符可以使用索引运算符访问: s[i]。 可以用 for 循环迭代字符串。
 
@@ -367,13 +328,13 @@ print("Hello ${args[0]}")
 
 - 字符串字面值用单引号括起来: '1'。 特殊字符可以用反斜杠转义。 支持这几个转义序列：\t、 \b、\n、\r、\'、\"、\\ 和 \$。 编码其他字符要用 Unicode 转义序列语法：'\uFF00'。
 
----
+------
 
 ## Basic Types
 
 ```kotlin
 Type		Bit width
---------------------
+--------------------------------------
 Double		64
 Float		32
 Long		64
@@ -390,9 +351,7 @@ val anotherBoxedA: Int? = a
 print(boxedA === anotherBoxedA) // !!!Prints 'false'!!!
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/basic-types.html)]
-
-???
+### 数据类型
 
 - 在 Kotlin 中，所有东西都是对象，在这个意义上讲所以我们可以在任何变量上调用成员函数和属性。有些类型是内置的，因为他们的实现是优化过的。但是用户看起来他们就像普通的类。本节我们会描述大多数这些类型：数字、字符、布尔和数组。
 
@@ -432,13 +391,13 @@ val l = 1L + 3 // Long + Int => Long
 list.filter { it > 10 }.map { element -> element * 2 }
 ```
 
----
+------
 
 class: center, middle
 
 # Classes and Objects
 
----
+------
 
 ## Classes
 
@@ -461,9 +420,7 @@ class Person(val firstName: String, val lastName: String,
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/classes.html)]
-
-???
+### 定义一个类
 
 - 类的定义要通过 class 关键字，跟 Java 里的一样，关键字后是类名。Kotlin 有一个主构造函数，我们可以直接将构造函数参数列表写在类的声明处，还可以直接用 var 或者 val 关键字将参数声明为成员变量（又称：类属性）
 
@@ -481,7 +438,7 @@ class Person(val firstName: String, val lastName: String, var age: Int) {
 }
 ```
 
----
+------
 
 ## Constructors
 
@@ -506,11 +463,7 @@ val invoice = Invoice()
 val customer = Customer("Joe Smith")
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/classes.html)]
-
-???
-
-### 主构造函数
+### 构造函数
 
 Kotlin 中，类可以拥有多个构造函数，这一点跟 Java 类似。但你也可以有一个主构造函数。下面的例子是我们从上面的例子里衍生出来的，在函数头里添加了一个主构造函数
 
@@ -525,7 +478,7 @@ Kotlin 中，类可以拥有多个构造函数，这一点跟 Java 类似。但�
 - 如果类有一个主构造函数,每个二级构造函数需要委托给主构造函数, 直接或间接地通过另一个二级函数。委托到另一个使用同一个类的构造函数 用this关键字
 - 要创建一个类的实例，我们调用构造函数，就好像它是普通的函数
 
----
+------
 
 ## Inheritance
 
@@ -551,16 +504,14 @@ open class AnotherDerived() : Base() {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/classes.html)]
-
-???
+### 类的继承
 
  - 在Kotlin所有的类中都有一个共同的父类Any，这是一个默认的父类且没有父类型声明
  - Any不属于java.lang.Object;特别是，它并没有任何其他任何成员，甚至连equals()，hashCode()和toString()都没有。
  - 要声明一个明确的父类，我们把类型放到类头冒号之后，父类可以（并且必须）在声明继承的地方， 用原始构造函数初始化。
  - 如果类没有主构造，那么每个次级构造函数初始化基本类型 使用super{：.keyword}关键字，或委托给另一个构造函数做到这一点。 注意，在这种情况下，不同的二级构造函数可以调用基类型的不同的构造函数。
 
----
+------
 
 ## Overriding Members
 
@@ -584,9 +535,7 @@ class C() : A(), B {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/classes.html)]
-
-???
+### 成员覆盖
 
 - 我们之前提到过，Kotlin力求清晰显式。不像Java中，Kotlin需要明确的 标注覆盖的成员（我们称之为open）和重写的函数。（继承父类并覆盖父类函数时，Kotlin要求父类必须有open标注，被覆盖的函数必须有open标注，并且子类的函数必须加override标注。）
 
@@ -600,7 +549,7 @@ class C() : A(), B {
 
 - 需要注意的是，我们并不需要标注一个抽象类或者函数为open - 因为这不言而喻。我们可以重写一个open非抽象成员使之为抽象的。
 
----
+------
 
 ## Properties
 
@@ -625,13 +574,13 @@ const val DEPRECATED: String = "deprecated"
 const val SOCKET_TIMEOUT = 30*1000L
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/properties.html)]
-
-???
+### 类的属性
 
 - Kotlin的类可以有属性. 这些声明是可变的,用关键字var或者使用只读关键字val
 - 要使用一个属性，只需要使用名称引用即可，就相当于Java中的公共字段
 - 注意公有的API(即public和protected)的属性，类型是不做推导的。~~ ~~这么设计是为了防止改变初始化器时不小心改变了公有API。
+
+### 常量属性的要求
 
 Properties the value of which is known at compile time can be marked as compile time constants using the const modifier. Such properties need to fulfil the following requirements:
 
@@ -639,7 +588,7 @@ Properties the value of which is known at compile time can be marked as compile 
 - Initialized with a value of type String or a primitive type
 - No custom getter
 
----
+------
 
 ## Getters and Setters
 
@@ -658,9 +607,7 @@ var setterVisibility: String = "abc"
   private set // the setter is private 
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/properties.html)]
-
-???
+### Getter和Setter
 
 声明一个属性的完整语法
 
@@ -680,7 +627,7 @@ var <propertyName>: <PropertyType> [= <property_initializer>]
 
 - 编译器会查看访问器的内部， 如果他们使用了实际字段（或者访问器使用默认实现），那么将会生成一个实际字段，否则不会生成。
 
----
+------
 
 ## Interface
 
@@ -706,9 +653,7 @@ class Child : MyInterface {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/interfaces.html)]
-
-???
+### 接口定义
 
 - 使用关键字 interface 来定义接口。Kotlin 的接口与 Java 8 类似，既包含抽象方法的声明，也包含 实现。与抽象类不同的是，接口无法保存状态。它可以有 属性但必须声明为 abstract或提供访问器实现。
 
@@ -716,7 +661,7 @@ class Child : MyInterface {
 
 - 实现多个接口时，可能会遇到接口方法名同名的问题。D 可以不用重写 bar()，因为它实现了 A 和 B，因而可以自动继承 B 中 bar() 的实现， 但是两个接口都定义了方法 foo()，为了告诉编译器 D 会继承谁的方法，必须在 D 中重写 foo()。
 
----
+------
 
 ## Data Class
 
@@ -738,9 +683,7 @@ println("$name, $age years of age")
 // prints "Jane, 35 years of age"
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/data-classes.html)]
-
-???
+### 数据类/POJO
 
 - 我们经常创建一些只是处理数据的类。在这些类里的标准功能经常是 衍生自数据。在Kotlin中，这叫做 数据类 并标记为data。
 
@@ -755,11 +698,9 @@ println("$name, $age years of age")
 - 在JVM中，如果生成的类需要含有一个无参的构造函数，则所有的属性必须有默认值。
 
 - 在很多情况下，我们我们需要对一些属性做修改而其他的不变。 这就是copy()这个方法的来源。对于上文的User类，应该是这么实现这个方法。
-
-
 - 在标准库提供了Pair和Triple。在很多情况下，即使命名数据类是一个更好的设计选择， 因为这能让代码可读性更强。
 
----
+------
 
 ## Destructuring Declarations
 
@@ -784,9 +725,7 @@ operator fun <K, V> Map.Entry<K, V>.component1() = getKey()
 operator fun <K, V> Map.Entry<K, V>.component2() = getValue()
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/multi-declarations.html)]
-
-???
+### 解构声明
 
 - 有时把一个对象_解构_成很多变量很比较方便，这种语法叫做_解构声明_。一个解构声明同时创造多个变量。 我们申明了两个新变量：name 和 age,并且可以独立使用他们。
 
@@ -798,7 +737,7 @@ operator fun <K, V> Map.Entry<K, V>.component2() = getValue()
 
 - 可能最好的遍历一个映射的方式就是这样，实现这个接口，于是你可以自由的使用解构声明 for-loops 来操作映射(也可以用在数据类实例的集合等)。
 
----
+------
 
 ## Nested and Inner Classes
 
@@ -824,15 +763,13 @@ class Outer {
 val demo = Outer().Inner().foo() // == 1
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/nested-classes.html)]
-
-???
+### 嵌套类和内部类
 
 - 在类的内部可以嵌套其他的类，相当于Java里的static内部类。
 
 - 为了能被外部类访问一个类可以被标记为内部类（“inner” 关键词）。 内部类会带有一个来自外部类的对象的引用
 
----
+------
 
 ## Enum
 
@@ -860,9 +797,7 @@ enum class ProtocolState {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/enum-classes.html)]
-
-???
+### 枚举
 
 - 枚举类的最基本应用是实现类型安全的多项目集合。其中每一个常量（NORTH，SOUTH……）都是一个对象。每一个常量用逗号“,”分隔。
 
@@ -871,9 +806,7 @@ enum class ProtocolState {
 - 像JAVA一样，枚举类在Kotlin中有合成方法。它允许列举枚举实例并且通过名称返回枚举实例。下面是应用实例 (假设枚举实例名称是EnumClass)。
 
 - 枚举常量也可以实现Comparable 接口。他们会依照在枚举类中的定义先后以自然顺序排列。
-
-
----
+------
 
 ## Object
 
@@ -900,9 +833,7 @@ val ab = object : A(1), B {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/object-declarations.html)]
-
-???
+### 对象和单例
 
 - 有些时候我们需要创建一个对某些类做了轻微改变的一个对象，而不用为了它显式地定义一个新的子类。 Java把这种情况处理为匿名内部类。 在Kotlin稍微推广了这个概念，称它们为对象表达式和对象声明。
 
@@ -918,7 +849,7 @@ val ab = object : A(1), B {
 - 当对象声明被第一次访问的时候,它会被延迟（lazily）初始化
 - 当对象表达式被用到的时候，它会被立即执行（并且初始化）
 
----
+------
 
 ## Companion
 
@@ -932,8 +863,6 @@ class MyClass {
 interface Factory<T> {
   fun create(): T
 }
-
-
 class MyClass {
   companion object : Factory<MyClass> {
     override fun create(): MyClass = MyClass()
@@ -943,9 +872,7 @@ class MyClass {
 val x = MyClass.Companion
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/object-declarations.html)]
-
-???
+### 伴生对象
 
 Kotlin 移除了 static 的概念。通常用 companion object 来实现类似功能。
 
@@ -955,7 +882,7 @@ Kotlin 移除了 static 的概念。通常用 companion object 来实现类似�
 - 注意，虽然伴生对象的成员在其他语言中看起来像静态成员，但在运行时它们 仍然是实体的实例成员，举例来说，我们能用它实现接口
 - 然而，在JVM中，如果你使用@JvmStatic注解，你可以让伴生对象的成员生成为实际存在的静态方法和域
 
----
+------
 
 ## Class Delegation
 
@@ -976,9 +903,7 @@ fun main() {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/delegation.html)]
-
-???
+### 类的委托
 
 委托是一个大家都知道的设计模式，Kotlin 把委托视为很重要的语言特性。
 
@@ -986,7 +911,7 @@ fun main() {
 
 - 在父类Derived中的 by-语句表示 b 将会被 储存在 Derived 的内部对象中，并且编译器会生成所有的用于转发给b的Base的方法。
 
----
+------
 
 ## Delegated Properties
 
@@ -1016,10 +941,6 @@ println(e.p)
 e.p = "NEW"
 // NEW has been assigned to ‘p’ in Example@33a17727.
 ```
-
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/delegated-properties.html)]
-
-???
 
 ### 委托属性
 
@@ -1056,7 +977,7 @@ getValue() 或/和 setValue() 函数可能会作为代理类的成员函数或�
 
 标准库中对于一些有用的委托提供了工厂（factory）方法。
 
----
+------
 
 ## By Lazy
 
@@ -1078,10 +999,6 @@ D/Lazy: Hello, Lazy!
 D/Lazy: Hello, Lazy!
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/delegated-properties.html)]
-
-???
-
 ### 延迟属性 Lazy
 
 函数 lazy() 接受一个 lambda 然后返回一个可以作为实现延迟属性的委托 Lazy<T> 实例来: 第一次对于 get()的调用会执行（之前）传递到 lazy()的lamda表达式并记录结果, 后面的 get() 调用会直接返回记录的结果。
@@ -1090,7 +1007,7 @@ D/Lazy: Hello, Lazy!
 
 而且如果你确定初始化将总是发生在单个线程，那么你可以使用 LazyThreadSafetyMode.NONE 模式, 它不会有任何线程安全的保证和相关的开销。
 
----
+------
 
 ## Observable
 
@@ -1115,10 +1032,6 @@ fun main(args: Array<String>) {
 // first -> second
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/delegated-properties.html)]
-
-???
-
 ### 可观察属性 Observable
 
 Delegates.observable() 需要两个参数：初始值和handler。 这个 handler 会在每次我们给赋值的时候被调用 (在工作完成前). 它有三个参数:一个被赋值的属性，旧的值和新的值
@@ -1129,7 +1042,7 @@ Delegates.observable() 需要两个参数：初始值和handler。 这个 handle
 first -> second
 如果你想有能力来截取和“否决”它分派的事件，就使用 vetoable() 取代 observable(). 被传递给 vetoable 的handler会在属性被赋新的值_之前_执行
 
----
+------
 
 ## By Map
 
@@ -1155,23 +1068,17 @@ class MutableUser(val map: MutableMap<String, Any?>) {
 // custom impl by Json
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/delegated-properties.html)]
-
-???
-
 ### 把属性储存在map中
 
 一个参加的用例是在一个map里存储属性的值。 这经常出现在解析JSON或者做其他的“动态”的事情应用里头。 在这样的情况下，你需要使用map的实例本身作为代理用于代理属性
 
 在这个例子中，构造函数会接收一个map参数，委托会从这个map中取值 (通过string类型的key，就是属性的名字)，对于 var的变量，我们可以把只读的Map换成 MutableMap就可以了
 
----
-
-class: center, middle
+------
 
 # Functions and Lambdas
 
----
+------
 
 ## Function Declarations
 
@@ -1199,10 +1106,6 @@ fun printHello(name: String?) {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/functions.html)]
-
-???
-
 ### 函数声明
 在Kotlin中，函数声明使用关键字 fun
 
@@ -1222,7 +1125,7 @@ fun printHello(name: String?) {
 ### 返回Unit的函数
 如果一个函数不返回任何有用的值，它的返回类型是Unit。Unit是一种只有一个值 - Unit`。这个 值不需要显式地返回。Unit返回类型声明也是可选的，可以省略。
 
----
+------
 
 ## Function Arguments
 
@@ -1246,10 +1149,6 @@ val a = arrayOf(1, 2, 3)
 val list = asList(-1, 0, *a, 4)
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/functions.html)]
-
-???
-
 ### 参数
 函数参数是使用Pascal表达式，即 name: type。参数用逗号隔开。每个参数必须有显式类型。
 
@@ -1259,7 +1158,7 @@ val list = asList(-1, 0, *a, 4)
 ### 命名参数
 可以在调用函数时使用命名的函数参数。当一个函数有大量的参数或默认参数时这非常方便。使用命名参数我们可以使代码更具有可读性。可以省略部分参数。
 
----
+------
 
 ## Function Usage
 
@@ -1286,10 +1185,6 @@ class Sample() {
 Sample().foo()
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/functions.html)]
-
-???
-
 ### 数量可变的参数(可变参数)
 函数的（通常最后一个）参数可以使用’vararg`修饰。内部函数vararg类型T是可见的arrayT,即上面的例子中的ts变量是Array<out T>类型。当我们调用vararg函数，我们可以一个接一个传递参数，例如 asList(1, 2, 3)或者，如果我们已经有了一个数组 并希望将其内容传递给函数，我们使用spread 操作符（在数组前面加*）
 
@@ -1302,7 +1197,7 @@ Kotlin提供局部函数,即一个函数在另一个函数中，局部函数可�
 ### 成员函数
 成员函数是一个函数,定义在一个类或对象里，成员函数调用点符号
 
----
+------
 
 ## Higher-order Functions
 
@@ -1318,10 +1213,6 @@ fun <T> lock(lock: Lock, body: () -> T): T {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/lambdas.html)]
-
-???
-
 ### 高阶函数
 
 这是个新奇的术语，它指的是函数可以接收函数，或者函数可以返回函数。
@@ -1336,7 +1227,7 @@ fun <T> lock(lock: Lock, body: () -> T): T {
 
 使用内联函数有时能提高高阶函数的性能。
 
----
+------
 
 ## Higher-order Functions
 
@@ -1356,9 +1247,7 @@ val names = listOf("Jake", "Jesse", "Matt", "Alec")
 val jakes = names.filter { it == "Jake" }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/lambdas.html)]
-
-???
+### 高阶函数
 
 另一个高阶函数的例子是 map() ( MapReduce)
 
@@ -1376,11 +1265,9 @@ lock (lock) {
 }
 ```
 
----
+------
 
 ## Function Types
-
-
 ```kotlin
 fun <T> max(collection: Collection<T>, less: (T, T) -> Boolean): T? {
   var max: T? = null
@@ -1395,10 +1282,6 @@ max(strings, { a, b -> a.length() < b.length() })
 fun compare(a: String, b: String): Boolean = a.length() < b.length()
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/lambdas.html)]
-
-???
-
 ### 函数类型
 
 对于一个接收一个函数作为参数的函数，我们必须为该参数指定一个函数类型。 
@@ -1411,7 +1294,7 @@ max函数是一个高阶函数, 也就是说 他的第二个参数是一个函�
 
 如上所写的是就函数类型, 或者还有命名参数, 如果你想文档化每个参数的含义。
 
----
+------
 
 ## Lambda Expressions
 
@@ -1436,9 +1319,7 @@ sum : Int.(other: Int) -> Int
 1.sum(2)
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/lambdas.html)]
-
-???
+### Lambda表达式
 
 另外，函数表达式也被称作 lambdas 或者 closures。这里有一个最简单的函数表达式： { it.toString() }。它是一段代码在 “it” 变量上调用了 two-string 函数。“it” 是个 built-in 的名字。当你在写这些函数表达式的时候，如果你只有一个参数传入这段代码，你可以用 “it” 引用，这只是一个你不需要定义参数的方法。
 
@@ -1480,7 +1361,7 @@ fun(x: Int, y: Int): Int = x + y
 
 kotlin提供了使用一个特定的 receiver对象 来调用一个函数的能力. 在函数体内部，你可以调用 接受者对象 的方法而不需要任何额外的限定符。 这和 扩展函数 有点类似，它允你在函数体内访问接收器对象的成员。
 
----
+------
 
 ## Inline Functions
 
@@ -1506,10 +1387,6 @@ inline fun foo(inlined: () -> Unit,
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/inline-functions.html)]
-
-???
-
 ### 内联函数
 
 内联函数和高阶函数经常一起见到。在某些场景下，当你用到泛型的时候，你可以给函数加上 inline 关键字。在编译时，它会用 lambda 表达式替换掉整个函数，整个函数的代码会成为内联代码。
@@ -1524,7 +1401,7 @@ inline修饰符会影响函数体本身以及传递过来的lambdas: 所有的�
 
 为了预防 有时候你只希望被（作为参数）传递到一个内联函数的lamdas 只有一些被内联，你可以用 noinline 修饰符标记你的参数
 
----
+------
 
 ## Extensions
 
@@ -1552,9 +1429,12 @@ fun Int.biggerThanTen(): Boolean {
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/extensions.html)]
 
-???
+声明一个扩展函数，我们需要用一个 接收者类型 也就是被扩展的类型来作为他的前缀。 下面是为MutableList<Int>添加一个swap方法，这个this关键字在扩展方法内接受对应的对象（在点符号以前传过来的） 现在，我们可以像一个其他方法一样调用MutableList<Int>。
+
+### 函数扩展
+
+Kotlin和c#、Gosu一样，能够扩展一个类的新功能，而无需继承类或使用任何类型的设计模式，如装饰者。 这通过特殊的声明叫做_extensions_。Kotlin支持_extension functions_ 和 extension properties.
 
 函数扩展是 Kotlin 最强大的特性之一。
 
@@ -1564,13 +1444,6 @@ Kotlin 有扩展函数的概念。这不是 Kotlin 语言独有的，但是和�
 
 Kotlin 的一个非常好的功能是，它会自动地转换有 getters 和 setters 综合属性的类型。所以我能够替换 getDay() 为 day，因为这个 day 的属性是存在的。它看起来像一个 field，但是实际上是个 property – getter 和 setter 的概念融合在了一起。
 
-### 扩展
-
-Kotlin和c#、Gosu一样，能够扩展一个类的新功能，而无需继承类或使用任何类型的设计模式，如装饰者。 这通过特殊的声明叫做_extensions_。Kotlin支持_extension functions_ 和 extension properties.
-
-### 扩展函数
-
-声明一个扩展函数，我们需要用一个 接收者类型 也就是被扩展的类型来作为他的前缀。 下面是为MutableList<Int>添加一个swap方法，这个this关键字在扩展方法内接受对应的对象（在点符号以前传过来的） 现在，我们可以像一个其他方法一样调用MutableList<Int>。
 
 ### 扩展的静态解析
 
@@ -1590,15 +1463,9 @@ Kotlin和c#、Gosu一样，能够扩展一个类的新功能，而无需继承�
 
 如果一个类定义有一个伴生对象 ，你也可以为伴生对象定义 扩展函数和属性，就像伴生对象的其他普通成员，只用用类名作为限定符去调用他们。
 
----
-
-class: center, middle
+------
 
 # Stdlib
-
-.footnote[[1](https://kotlinlang.org/api/latest/jvm/stdlib/index.html)]
-
-???
 
 Kotlin标准库 The Kotlin Standard Library provides living essentials for everyday work with Kotlin. These include:
 
@@ -1610,7 +1477,7 @@ Kotlin标准库 The Kotlin Standard Library provides living essentials for every
 
 - 对JDK文件/线程/IO等类的扩展 Extensions for JDK classes making it convenient to work with files, IO, and threading.
 
----
+------
 
 ## Types
 
@@ -1633,11 +1500,7 @@ int[]							kotlin.IntArray!
 String[]						kotlin.Array<(out) String>!
 ```
 
-.footnote[[1](https://kotlinlang.org/api/latest/jvm/stdlib/index.html),[2](http://tanfujun.com/kotlin-web-site-cn/docs/reference/java-interop.html)]
-
-???
-
----
+------
 
 ## Functions
 
@@ -1658,7 +1521,7 @@ fun <T, R> with(receiver: T, block: T.() -> R): R
 
 ```
 
----
+------
 
 ## Functions
 
@@ -1686,10 +1549,6 @@ with(u2) {
 }
 ```
 
-.footnote[[1](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/index.html)]
-
-???
-
 ### T.apply
 
 Calls the specified function block with this value as its receiver and returns this value.
@@ -1702,7 +1561,7 @@ Calls the specified function block with this value as its argument and returns i
 
 Calls the specified function block with the given receiver as its receiver and returns its result.
 
----
+------
 
 ## Arrays
 
@@ -1730,11 +1589,7 @@ val strArray1 = arrayOf("Cat", "Dog", "Rabbit")
 // longArrayOf(), floatArrayOf()
 ```
 
-.footnote[[1](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html)]
-
-???
-
----
+------
 
 ## Array Extensions
 
@@ -1759,11 +1614,7 @@ arrayOf()/arrayOfNulls()/emptyArray()/intArrayOf()
 - intersect()()/joinTo()/joinToString()
 ```
 
-.footnote[[1](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html)]
-
----
-
-
+------
 ## Collections
 
 ```kotlin
@@ -1788,9 +1639,7 @@ println(map["foo"])
 val snapshot: Map<String, Int> = HashMap(readWriteMap)
 ```
 
-.footnote[[1](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html)]
-
----
+------
 
 ## Ranges
 
@@ -1818,9 +1667,7 @@ for (i in 4 downTo 1 step 2) print(i) // prints "42"
 (1..12 step 4).last == 9   
 ```
 
-.footnote[[1](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html)]
-
----
+------
 
 ## Collection Extensions
 
@@ -1850,9 +1697,7 @@ for (i in 4 downTo 1 step 2) print(i) // prints "42"
 
 ```
 
-.footnote[[1](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/index.html)]
-
----
+------
 
 ## Generics
 
@@ -1880,10 +1725,7 @@ fun <T> T.basicToString() : String {  // extension function
 }
 ```
 
-
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/generics.html)]
-
-???
+### Kotlin的泛型
 
 - 与Java相似，Kotlin中的类也具有类型参数，一般而言，创建类的实例时，我们需要声明参数的类型，但当参数类型可以从构造函数参数等途径推测时，在创建的过程中可以忽略类型参数：
 
@@ -1915,13 +1757,11 @@ Kotlin的范型就像Java一样不会在运行时保留信息，也就是对象�
 
 这就导致，无法使用is-检测范型。~~ Kotlin只允许用is-来检测星号投射的泛型类型: Kotlin只允许用is-检测星号投射的范型类型。
 
----
-
-class: center, middle
+------
 
 # Others
 
----
+------
 
 ## Smart Cast
 
@@ -1947,17 +1787,13 @@ if (x !is String) return
      
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/typecasts.html)]
-
-???
-
 ### is 和 !is运算符
 我们可以使用is 或者它的否定!is运算符检查一个对象在运行中是否符合所给出的类型
 
 ### 智能转换
 在很多情况下，在Kotlin有时不用使用明确的转换运算符，因为编译器会在需要的时候自动为了不变的值和输入（安全）而使用is进行监测。这些智能转换在 when-expressions 和 while-loops 也一样
 
----
+------
 
 ## Type Cast
 
@@ -1976,10 +1812,6 @@ val x: String? = y as String?
 
 val x: String? = y as? String
 ``` 
-
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/typecasts.html)]
-
-???
 
 ### “不安全”的转换运算符
 
@@ -2005,7 +1837,7 @@ val x: String? = y as? String
 
 记住尽管事实是右边的as?可使一个不为空的String类型的转换结果为可空的。
 
----
+------
 
 ## This
 
@@ -2022,8 +1854,6 @@ class A { // implicit label @A
       val funLit = lambda@ fun String.() {
         val d = this // funLit's receiver
       }
-
-
       val funLit2 = { s: String ->
         // foo()'s receiver, since enclosing lambda expression
         // doesn't have any receiver
@@ -2034,9 +1864,7 @@ class A { // implicit label @A
 }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/this-expressions.html)]
-
-???
+### This的语义
 
 为了记录下当前的接受者我们使用this表达式:
 
@@ -2047,7 +1875,7 @@ class A { // implicit label @A
 
 为了在范围外部访问this(一个类, 或者扩展函数, 或者带标签的带接收者的字面函数 我们使用this@label作为label
 
----
+------
 
 ## Null Safety
 
@@ -2073,13 +1901,9 @@ println(files?.size)
 println(files?.size ?: "empty")
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/null-safety.html)]
-
-???
+### 可空（Nullable）和不可空（Non-Null） 类型
 
 在 Kotlin 的类型体系里，有空类型和非空类型。类型系统识别出了 string 是一个非空类型，并且阻止编译器让它以空的状态存在。想要让一个变量为空，我们需要在声明后面加一个 ? 号，同时赋值为 null。
-
-### 可空（Nullable）和不可空（Non-Null） 类型
 
 Kotlin 的类型系统致力于消除空引用异常的危险，又称《上亿美元的错误》。
 
@@ -2136,7 +1960,7 @@ bob?.department?.head?.name
 val aInt: Int? = a as? Int
 ```
 
----
+------
 
 ## Exceptions
 
@@ -2156,11 +1980,7 @@ val a: Int? = try { parseInt(input) }
 	catch (e: NumberFormatException) { null }
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/exceptions.html)]
-
----
-
-
+------
 ## Reference
 
 ```kotlin
@@ -2184,16 +2004,12 @@ println(strings.filter(oddLength)) // Prints "[a, abc]"
 ```
 
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/reflection.html)]
-
-???
-
 ### 类引用
 
 最基本的反射特性就是得到运行时的类引用。要获取引 用并使之成为静态类可以使用字面类语法:
 
 val c = MyClass::class
-引用是KClass类型.~~你可以使用KClass.properties 和KClass.extensionProperties来获得类和父类所有属性引用的列表。~~
+引用是KClass类型.你可以使用KClass.properties 和KClass.extensionProperties来获得类和父类所有属性引用的列表。
 
 注意Kotlin类引用不完全与Java类引用一致.查看Java interop section 详细信息。
 
@@ -2216,6 +2032,7 @@ println(numbers.filter(::isOdd)) // prints [1, 3]
 
 我们同样可以用::操作符来访问Kotlin中的顶级类的属性：
 
+```kotlin
 var x = 1
 
 fun main(args: Array<String>) {
@@ -2223,19 +2040,21 @@ fun main(args: Array<String>) {
     ::x.set(2)
     println(x)         // prints "2"
 }
+```
+
 表达式::x推断为KProperty<Int>类型的属性对象,它允许我们 使用get()函数来读它的值或者使用name属性来得到它的值。
 
 ### 构造函数引用
 
 构造函数可以像属性和方法那样引用. 它们可以使用在任何一个函数类型的对象的地方， 期望得到相同参数的构造函数，并返回一个适当类型的对象. 构造函数使用::操作符加类名引用.考虑如下函数， 需要一个无参数函数返回类型是Foo
 
----
+------
 
 class: center, middle
 
 # Java Interop
 
----
+------
 
 ## Calling Java from Kotlin
 
@@ -2257,10 +2076,6 @@ if (calendar.firstDayOfWeek == Calendar.SUNDAY) {
     calendar.firstDayOfWeek = Calendar.MONDAY       
 }
 ```
-
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/java-interop.html)]
-
-???
 
 - 如果一个Java方法返回void，那么在Kotlin中，它会返回Unit。 万一有人使用它的返回值，Kotlin的编译器会在调用的地方赋值， 因为这个值本身已经提前可以预知了(这个值就是Unit)。
 
@@ -2286,7 +2101,7 @@ Kotlin特殊处理一部分java类型。这些类型不是通过as或is来直接
 
 Java平台上，原生数据类型的数组被用来避免封箱/开箱的操作开销。 由于Kotlin隐藏了这些实现细节，就得有一个变通方法和Java代码交互。 每个原生类型的数组都有一个特有类(specialized class)来处理这种问题(IntArray, DoubleArray, CharArray …)。 它们不是Array类，而是被编译成java的原生数组，来获得最好的性能。
 
----
+------
 
 ## Calling Java from Kotlin
 
@@ -2308,10 +2123,6 @@ val executor = ThreadPoolExecutor()
 // void execute(Runnable command)
 executor.execute { println("This runs in a thread pool") }
 ```
-
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/java-interop.html)]
-
-???
 
 ### Java Varargs
 
@@ -2343,7 +2154,7 @@ java类的静态成员就是它们的 “同伴对象”。我们无法将这样
 
 还要注意这个特性只针对和 Java 的互操作；因为 Kotlin 有合适的函数类型，把函数自动转换成 Kotlin 接口的实现是没有必要的，也就没有支持了。
 
----
+------
 
 ## Calling Kotlin from Java
 
@@ -2366,10 +2177,6 @@ new demo.Foo();
 demo.DemoUtils.bar();
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/java-to-kotlin-interop.html)]
-
-???
-
 可以使用 @JvmName 注解自定义生成的Java 类的类名
 
 ### 属性
@@ -2388,7 +2195,7 @@ example.kt 文件中 org.foo.bar 包内声明的所有的函数和属性，都�
 
 如果在 Java 需要像字段一样调用一个 Kotlin 的属性，你需要使用@JvmField注解。这个字段与属性具有相同的可见性。属性符合有实际字段(backing field)、非私有、没有open, override 或者 const修饰符、不是被委托的属性这些条件才可以使用@JvmField注解。
 
----
+------
 
 ## Calling Kotlin from Java
 
@@ -2413,10 +2220,6 @@ C.COMPARATOR.compare(key1, key2);
 int v = C.VERSION;
 ```
 
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/java-to-kotlin-interop.html)]
-
-???
-
 ### 静态字段
 
 在一个命名对象或者伴生对象中声明的Koltin属性会持有静态实际字段(backing fields)，这些字段存在于该命名对象或者伴生对象中的。
@@ -2437,7 +2240,7 @@ int v = C.VERSION;
 
 通过使用　@JvmStatic　注解对象的属性或伴生对象，使对应的getter 和 setter 方法在这个对象或者包含这个伴生对象的类中也成为静态成员。
 
----
+------
 
 ## Calling Kotlin from Java
 
@@ -2461,10 +2264,6 @@ void f(String a, int b, String c) { }
 void f(String a, int b) { }
 void f(String a) { }
 ```
-
-.footnote[[1](http://tanfujun.com/kotlin-web-site-cn/docs/reference/java-to-kotlin-interop.html)]
-
-???
 
 ### 用@JvmName解决签名冲突
 
@@ -2493,431 +2292,4 @@ Kotlin里它们可以都用filterValid来访问，但是在Java里，它们是fi
 
 Nothing 是一种特殊的类型，因为它在 Java 中没有类型相对应。事实上，每个 Java 的引用类型，包括 java.lang.Void 都可以接受 null值，但是 Nothing 不行，因此在 Java 世界中没有什么可以代表这个类型，这就是为什么在Kotlin 中要生成原始类型需要使用 Nothing。
 
-
----
-## JVM
-
-Annotations
-
-```kotlin
-@JvmField
-@JvmMultifileClass
-@JvmName
-@JvmOverloads
-@JvmStatic
-@Synchronized
-@Throws
-@Transient
-@Volatile
-```
-
----
-class: center, middle
-
-# Libraries
-
----
-
-## Anko DSL
-
-```kotlin
-val act = this
-val layout = LinearLayout(act)
-layout.orientation = LinearLayout.VERTICAL
-val name = EditText(act)
-val button = Button(act)
-button.text = "Say Hello"
-button.setOnClickListener {
-    Toast.makeText(act, "Hello, ${name.text}!", 
-    	Toast.LENGTH_SHORT).show()
-}
-layout.addView(name)
-layout.addView(button)
-```
-
-```kotlin
-verticalLayout {
-    val name = editText()
-    button("Say Hello") {
-        onClick { toast("Hello, ${name.text}!") }
-    }
-}
-```
-
-.footnote[[1](https://github.com/Kotlin/anko)]
-
----
-
-## Anko Extensions
-
-```kotlin
-toast("Hi there!")
-toast(R.string.message)
-longToast("Wow, such a duration")
-
-alert("Hi, I'm Roy", "Have you tried turning it off and on again?")
-	 {
-    positiveButton("Yes") {toast("Oh…")}
-    negativeButton("No") {}
-}.show()
-
-val countries = listOf("Russia", "USA", "Japan", "Australia")
-selector("Where are you from?", countries) { i ->
-    toast("So you're living in ${countries[i]}, right?")
-}
-
-info("String " + "concatenation")
-info { "String " + "concatenation" }
-```
-
-.footnote[[1](https://github.com/Kotlin/anko/blob/master/doc/ADVANCED.md)]
-
----
-
-## KotterKnife
-
-```kotlin
-public class PersonView(context: Context, attrs: AttributeSet?)
-	 : LinearLayout(context, attrs) {
-  val firstName: TextView by bindView(R.id.first_name)
-  val lastName: TextView by bindView(R.id.last_name)
-
-  // Optional binding.
-  val details: TextView? by bindOptionalView(R.id.details)
-
-  // List binding.
-  val nameViews: List<TextView> by bindViews(R.id.first_name,
-  	 R.id.last_name)
-
-  // List binding with optional items being omitted.
-  val nameViews: List<TextView> by bindOptionalViews(
-  	R.id.first_name, R.id.middle_name, R.id.last_name)
-}
-```
-
-.footnote[[1](https://github.com/JakeWharton/kotterknife)]
-
----
-
-## Koi Extensions
-
-```kotlin
-// available for Activity and Fragment
-val act = getActivity() // Activity
-act.restart() // restart Activity
-val app = act.getApp() // Application
-val app2 = act.application  // Application
-// Activity.find()
-// Fragment.find()
-// View.find()
-val textView = act.find<TextView>(android.R.id.text1)
-
-// available for Context
-// available in Activity/Fragment/Service/Context
-toast(R.string.app_name)
-toast("this is a toast")
-longToast(R.string.app_name)
-longToast("this is a long toast")
-```
-
-.footnote[[1](https://github.com/mcxiaoke/kotlin-koi)]
-
----
-
-## Context Extensions
-
-```kotlin
-val isYoutubeInstalled = isAppInstalled("com.douban.app")
-val isMainProcess = isMainProcess()
-val disabled = isComponentDisabled(MainActivity::class.java)
-enableComponent(MainActivity::class.java)
-
-val sig = getPackageSignature()
-val sigString = getSignature()
-
-// available for Context
-// easy way to get system service, no cast
-val wm = getWindowService()
-val tm = getTelephonyManager()
-val nm = getNotificationManager()
-val acm = getActivityManager()
-val inflater = getLayoutService()
-val lm = getLocationManager()
-val wifi = getWifiManager()
-```
-
-.footnote[[1](https://github.com/mcxiaoke/kotlin-koi)]
-
----
-
-## Async Functions
-
-```kotlin
-private val intVal = 1000
-private var strVal: String? = null
-
-asyncSafe {
-    // if you want get caller context
-    val ctx = getCtx()
-    // if context is Activity or Fragment
-    // may cause memory leak
-    print("outside value, $intVal $strVal")
-
-    mainThreadSafe {
-        // also with context alive check
-        // if context dead, not executed
-        print("code here executed in main thread")
-    }
-
-    mainThread {
-        // no context check
-        print("code here executed in main thread")
-    }
-}
-```
-
-.footnote[[1](https://github.com/mcxiaoke/kotlin-koi)]
-
----
-
-class: center, middle
-
-# Real Examples
-
----
-
-## ChatDebug.kt
-
-```kotlin
-// ChatDebug.kt
-@JvmField val developers = listOf("1376127", "1062052", "1176229")
-@JvmStatic private var toast: Toast? = null
-
-@JvmStatic private fun showToast(ctx: Context, message: String) {
-    toast = Toast.makeText(ctx, message, Toast.LENGTH_LONG)
-    toast?.setGravity(Gravity.CENTER, 0, 0)
-    toast?.show()
-}
-
-@JvmStatic fun handleDevCmd(act: Activity, text: String): Boolean {
-    if (text.startsWith("//")) {
-        val cmd = text.substring(2)
-        when (cmd) {
-            "d", "dump" -> return showDevDialog(act, false)
-            "d2", "dump2" -> return showDevDialog(act, true)
-            "dc", "dbclear" -> return clearDatabase(act)
-            else -> { }
-        }
-    }
-    return false
-}
-```
-
----
-
-## ChatHelper.kt
-
-```kotlin
-// com.douban.chat.ChatHelper.kt
-@JvmStatic fun filterMessages(data: SyncData, 
-	type: String, cid: String): List<Message> {
-    return data.messages.filter {
-        cid == it.conversationId && type == it.conversationType
-    }
-}
-@JvmStatic fun findDuplicate(messages: List<Message>): String {
-    messages.toHashSet().forEach { 
-    	messages.toMutableList().remove(it) }
-    return copy.joinToString { "${it.id}(${it.syncId})" }
-}   
-@JvmStatic @Synchronized fun addIfNotContains(
-        messages: MutableList<Message>, 
-        	newMessage: Message) {
-    synchronized(lock) {
-        if (newMessage.id > messages.lastOrNull()?.id ?: 0) {
-            messages.add(newMessage)
-        }
-    }
-}
-```
-
----
-
-## ChatPrefs.kt
-
-```kotlin
-// com.douban.chat.ChatPrefs.kt
-class ChatPrefs(private val mContext: Context) {
-    private val mPreferences: SharedPreferences
-
-    fun saveSyncInfo(info: SyncInfo?) {
-        info?.let {
-            mPreferences.edit()
-            	.putInt("sync_id_${info.type}", info.id)
-                .putString("sync_info_${info.type}", 
-               	info.toJson()).apply()
-        }
-    }
-
-    companion object {
-        const private val SHARED_PREFERENCES_NAME 
-        	= "chat_sdk_preferences"
-        const private val KEY_CLIENT_ID = "client_id_"
-    }
-}
-```
-
----
-
-## DataProvider.kt
-
-```kotlin
-// com.douban.chat.DataProvider.kt
-fun syncInfo(): SyncInfo? = recent?.info
-
-fun syncId(): Int = recent?.info?.id ?: 0
-
-fun latestMessage(): Message? = recent?.messages?.lastOrNull()
-    
-fun putSync(data: SyncData) {
-        val curIds = messagesMap.values.flatten().takeLast(5)
-                .map { "${it.id}(${it.syncId})" }.joinToString()
-        val newIds = data.messages.takeLast(5)
-                .map { "${it.id}(${it.syncId})" }.joinToString()
-    }
-    synchronized (lock) {
-        recent = data
-        putSyncMessages(data.messages)
-    }
-    if (ChatDebug.DEBUG) {
-        LogUtil.v(TAG, "putSync() total:${messagesMap.size}")
-    }
-}
-```
-
----
-
-## ChatManager.kt
-
-```kotlin
-// com.douban.chat.ChatManager.kt
-object ChatManager {
-    lateinit var api: ChatApi
-    lateinit private var app: Application
-    // ......
-    @Synchronized fun init(ctx: Context,
-                           config: ChatConfig) {
-        app = ctx.applicationContext as Application
-        api = ChatApiImpl(config.apiKey, config.deviceId,
-                config.apiHost, config.userAgent)            
-    // ......
-    handler = object : Handler() {
-        override fun handleMessage(msg: android.os.Message) {
-            when (msg.what) {
-                MSG_SYNC -> handleSync()
-                MSG_PING -> handlePing()
-                MSG_CHECK -> handleCheck()
-            }
-        }
-    }
-}
-```
-
----
-
-## ChatStore.kt
-
-```kotlin
-// com.douban.chat.db.ChatStore.kt
-init {
-    mHelper = SQLiteHelper(mContext)
-}
-    
-fun putSyncData(data: SyncData): Int {
-    val info = data.info
-    mHelper.transaction { db ->
-        data.messages.forEach {
-            db.insert(SQLiteHelper.SYNC_DATA_TABLE, 
-            	null, SQLiteHelper.getMessageValues(it))
-        }
-        db.insert(SQLiteHelper.SYNC_INFO_TABLE, null,
-                SQLiteHelper.getSyncInfoValues(info))
-        val idCv = ContentValues()
-        with(idCv) {
-            db.insert(SQLiteHelper.KEY_VALUE_TABLE, null, idCv)
-        }
-    }
-    pruneConversationMessages(data.messages.firstOrNull())
-    return data.messages.size
-}
-```
-
----
-
-## MqttProvider.kt
-
-```kotlin
-// com.douban.chat.mqtt. MqttProvider.kt
-var onNewMessage: ((topic: String, payload: String) -> Unit)? 
-	= null
-var clientId: String?
-    get() = config.clientId
-    set(value) {
-        config.clientId = value
-    }                
- 
-fun doUnSubscribeTopics(topics: Array<String>,
-    	completion: ((Boolean, Throwable?) -> Unit)?) {
-    when (topics.size) {
-        0 -> completion?.invoke(false,
-                NullPointerException("topics must not be null"))
-        else -> {
-            savedTopics.removeAll(topics.toList())
-            execute {
-            // ......
-                completion?.invoke(error == null, error)
-            }
-        }
-    }
-```
-
----
-
-## MqttService.kt
-
-```kotlin
-// com.douban.chat.service.MqttService.kt
-override val isConnected: Boolean
-    get() = provider?.isConnected ?: false
-    
-private fun forcePing(from: String) {
-    acquireWakeLock(ChatConst.ONE_SECOND * 5L)
-    provider?.doPingMQTT() { r, e ->
-        releaseWakeLock()
-        if (r) {
-            connection.onPing()
-        }
-    }
-}
-    
-private fun doUnSubscribeTopics(topics: Array<String>?) {
-    topics?.let {
-        provider?.doUnSubscribeTopics(it, null)
-    }
-}     
-```
-
----
-
-class: center, middle
-
-# END
-
-## 
-
-2016.03.24
-
-## 
-
-zhangxiaoke@douban.com
-
+------
